@@ -1,4 +1,4 @@
-(defproject blobstore.api "1.0"
+(defproject blobstore "1.0"
   :description "API for storing blobs of data"
   :url ""
   :license {:name "MIT"
