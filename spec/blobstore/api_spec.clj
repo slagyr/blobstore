@@ -1,5 +1,6 @@
 (ns blobstore.api-spec
   (:require [speclj.core :refer :all]
+            [blobstore.abstr :as abstr]
             [blobstore.api :refer :all]
             [blobstore.fake :refer [new-fake-blobstore]]
             [blobstore.memory :refer [new-memory-blobstore]]))
@@ -78,6 +79,9 @@
         (should= "abc123" (:key result))
         (should= nil (get-blob "abc123"))
         (should= [] (list-blobs))))
+
+    (it "generates a url"
+      (should= (abstr/-blob-url *blobstore* "abc123" {}) (blob-url "abc123")))
 
     )
   )

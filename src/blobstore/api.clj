@@ -46,3 +46,4 @@
 (defn get-blob [key] (-get-blob (blobstore) key))
 (defn delete-blob [key] (-delete-blob (blobstore) key))
 (defn list-blobs [] (-list-blobs (blobstore)))
+(defn blob-url [key & args] (-blob-url (blobstore) key (->options args)))

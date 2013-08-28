@@ -59,6 +59,15 @@
       (let [result (delete-blob "abc123")]
         (should= nil (get-blob "abc123"))
         (should= [] (list-blobs))))
+
+    (it "generates a url with default pattern"
+      (should= "/file-blob/abc123" (blob-url "abc123"))
+      (should= "/file-blob/abc123?foo=bar" (blob-url "abc123" :foo "bar")))
+
+    (it "generates a url with custom patterm"
+      (binding [*blobstore* (new-blobstore {:implementation "file" :root root :url-pattern "/custom/%s/blah"})]
+        (should= "/custom/abc123/blah" (blob-url "abc123"))
+        (should= "/custom/abc123/blah?foo=bar" (blob-url "abc123" :foo "bar"))))
     )
   )
 

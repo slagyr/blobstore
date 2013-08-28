@@ -26,12 +26,16 @@
       (when-not (= "NoSuchKey" (.getErrorCode e))
         (throw (ex-info "AWS Problem" {:key key :bucket bucket} e))))))
 
+(defn url-for [creds bucket key options]
+  (format "https://s3.amazonaws.com/%s/%s" bucket key))
+
 (deftype S3Blobstore [creds bucket]
   blobstore.abstr.Blobstore
   (-store-blob [this blob options] (store-blob creds bucket blob options))
   (-get-blob [this key] (get-blob creds bucket key))
   (-delete-blob [this key] (s3/delete-object creds bucket key))
-  (-list-blobs [this] (listing creds bucket)))
+  (-list-blobs [this] (listing creds bucket))
+  (-blob-url [this key options] (url-for creds bucket key options)))
 
 (defn new-s3-blobstore [& args]
   (let [options (->options args)
