@@ -40,7 +40,7 @@
         store (S3Blobstore. creds bucket)]
     (when (and (not (:skip-bucket-check options)) (not (s3/bucket-exists? creds bucket)))
       (do
-        (log/info "Bucket '%s' missing.  Creating it.")
+        (log/info (format "Bucket '%s' missing.  Creating it." bucket))
         (s3/create-bucket creds bucket)))
     store))
 

@@ -12,7 +12,7 @@
 (defn set-blobstore!
   "Uses alter-var-root to set *blobstore*. A violent, but effective way to install a datastore."
   [^blobstore.abstr.Blobstore blobstore]
-  (log/debug "focefully setting datastore:" blobstore)
+  (log/debug "focefully setting blobstore:" blobstore)
   (alter-var-root (var *blobstore*) (fn [_] blobstore)))
 
 (defn blobstore

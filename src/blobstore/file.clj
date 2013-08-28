@@ -5,28 +5,28 @@
             [hyperion.log :as log]))
 
 (defn- read-index [root]
-  (when (.exists (file (str root ".index")))
-    (read (java.io.PushbackReader. (reader (str root ".index"))))))
+  (when (.exists (file root ".index"))
+    (read (java.io.PushbackReader. (reader (file root ".index"))))))
 
 (defn- write-index [root index]
-  (spit (str root ".index") (pr-str index)))
+  (spit (file root ".index") (pr-str index)))
 
 (defn store-blob [root blob options]
   (let [index (read-index root)]
-    (with-open [output (output-stream (str root (:key options)))]
+    (with-open [output (output-stream (file root (:key options)))]
       (copy blob output))
     (write-index root (assoc index (:key options) options))))
 
 (defn get-blob [root key]
   (let [index (read-index root)]
     (when-let [meta (get index key)]
-      (assoc meta :blob (input-stream (str root key))))))
+      (assoc meta :blob (input-stream (file root key))))))
 
 (defn listing [root]
   (or (vals (read-index root)) []))
 
 (defn delete-blob [root key]
-  (let [file (file (str root key))]
+  (let [file (file root key)]
     (when (.exists file)
       (.delete file)
       (write-index root (dissoc (read-index root) key)))))
@@ -40,10 +40,10 @@
 
 (defn new-file-blobstore [& args]
   (let [options (->options args)
-        root (:root options)
+        root (file (:root options))
         store (FileBlobstore. root)]
-    (when-not (.exists (file root))
+    (when-not (.exists root)
       (log/info "Root doesn't exist.  Creating: " root)
-      (.mkdirs (file root)))
+      (.mkdirs root))
     store))
 

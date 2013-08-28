@@ -4,7 +4,7 @@
             [clojure.java.io :refer [file]]
             [speclj.core :refer :all]))
 
-(def root (str (System/getProperty "java.io.tmpdir") "blobstore/"))
+(def root (str (System/getProperty "java.io.tmpdir") "blobstore"))
 ;(println "root: " root)
 
 (defn with-file-blobstore []
@@ -17,7 +17,7 @@
   (it "creation"
     (let [store (new-blobstore {:implementation "file" :root root})]
       (should= "blobstore.file.FileBlobstore" (.getName (class store)))
-      (should= root (.root store))))
+      (should= root (.getAbsolutePath (.root store)))))
 
   (context "with store"
 
