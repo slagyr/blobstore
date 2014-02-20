@@ -1,8 +1,7 @@
 (ns blobstore.memory
-  (:require [chee.util :refer [->options]]
+  (:require [blobstore.abstr :refer [->options]]
             [clojure.java.io :refer [copy]]
-            [clojure.string :as str]
-            [blobstore.abstr]))
+            [clojure.string :as str]))
 
 (defn- ->bytes [source]
   (let [buffer (java.io.ByteArrayOutputStream.)]
@@ -12,8 +11,8 @@
 (defn- put-blob [store blob options]
   (let [key (:key options)]
     (-> store
-      (assoc key (->bytes blob))
-      (assoc-in [:meta key] (dissoc options :key)))))
+        (assoc key (->bytes blob))
+        (assoc-in [:meta key] (dissoc options :key)))))
 
 (defn- find-blob [store key]
   (when-let [blob (get store key)]
@@ -24,8 +23,8 @@
 (defn- delete-blob [store key]
   (let [meta (get-in @store [:meta key])]
     (swap! store (fn [s] (-> s
-                           (dissoc key)
-                           (update-in [:meta] dissoc key))))
+                             (dissoc key)
+                             (update-in [:meta] dissoc key))))
     (assoc meta :key key)))
 
 (defn- listing [store]

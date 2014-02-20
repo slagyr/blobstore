@@ -1,9 +1,8 @@
 (ns blobstore.file
-  (:require [blobstore.abstr]
-            [chee.util :refer [->options]]
+  (:require [blobstore.abstr :refer [->options]]
             [clojure.java.io :refer [copy reader output-stream file input-stream]]
             [clojure.string :as str]
-            [hyperion.log :as log]))
+            [taoensso.timbre :as log]))
 
 (defn- read-index [root]
   (when (.exists (file root ".index"))

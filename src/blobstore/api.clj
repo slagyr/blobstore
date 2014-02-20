@@ -1,9 +1,10 @@
 (ns blobstore.api
   (:require [clojure.walk :refer [keywordize-keys]]
-            [chee.util :refer [->options]]
-            [hyperion.log :as log]
-            [hyperion.key :refer [generate-id]]
+            [taoensso.timbre :as log]
             [blobstore.abstr :refer :all]))
+
+(defn- generate-id []
+  (.replace (str (java.util.UUID/randomUUID)) "-" ""))
 
 (declare ^{:dynamic true
            :tag blobstore.abstr.Blobstore

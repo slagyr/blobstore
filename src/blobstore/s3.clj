@@ -1,9 +1,8 @@
 (ns blobstore.s3
   (:require [aws.sdk.s3 :as s3]
-            [blobstore.abstr]
-            [chee.util :refer [->options]]
+            [blobstore.abstr :refer [->options]]
             [clojure.java.io :refer [copy]]
-            [hyperion.log :as log]))
+            [taoensso.timbre :as log]))
 
 (defn store-blob [creds bucket blob options]
   (s3/put-object creds bucket (:key options) blob (dissoc options :key)))

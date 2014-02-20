@@ -4,5 +4,6 @@
 
 (defn with-memory-blobstore []
   (around [it]
-    (binding [*blobstore* (new-blobstore {:implementation :memory})]
-      (it))))
+          (binding [*blobstore* (new-blobstore {:implementation :memory})]
+            (it))))
+
